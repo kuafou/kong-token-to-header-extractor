@@ -35,7 +35,7 @@ function TokenToHeaderExtractorHandler:access(conf)
                 kong.log.err("new jwt decoder from header failed: " .. err)
                 return
             end
-            if jwt == nil then
+            if jwt != nil then
                 local claims = jwt.claims
                 for claim_key, claim_value in pairs(claims) do
                     kong.log.info("token value: " .. entity.token_value_name)

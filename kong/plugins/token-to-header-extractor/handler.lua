@@ -32,18 +32,17 @@ function TokenToHeaderExtractorHandler:access(conf)
         if header then
             local jwt, err = jwt_decoder:new(header)
             if err then
-                kong.log.err("new jwt decoder from header failed: " .. err)
+                kong.log.err("Error when new jwt decoder from header: " .. err)
                 return
             end
-            if jwt != nil then
-                local claims = jwt.claims
-                for claim_key, claim_value in pairs(claims) do
-                    kong.log.info("token value: " .. entity.token_value_name)
-                    kong.log.info("claim_key: " .. claim_key)
-                    if entity.token_value_name == claim_key then
-                        -- set header
-                        req_set_header(entity.header_name, claim_value)
-                    end
+            
+            local claims = jwt.claims
+            for claim_key, claim_value in pairs(claims) do
+                kong.log.info("token value: " .. entity.token_value_name)
+                kong.log.info("claim_key: " .. claim_key)
+                if entity.token_value_name == claim_key then
+                    -- set header
+                    req_set_header(entity.header_name, claim_value)
                 end
             end
         end

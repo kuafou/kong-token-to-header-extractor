@@ -8,7 +8,7 @@ local kong = kong
 local TokenToHeaderExtractorHandler = BasePlugin:extend()
 
 TokenToHeaderExtractorHandler.VERSION  = "0.1.0"
--- TokenToHeaderExtractorHandler.PRIORITY = 2
+TokenToHeaderExtractorHandler.PRIORITY = 10
 
 function TokenToHeaderExtractorHandler:new()
     TokenToHeaderExtractorHandler.super.new(self, "token-to-header-extractor")

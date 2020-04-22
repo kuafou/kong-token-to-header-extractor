@@ -27,17 +27,22 @@ function TokenToHeaderExtractorHandler:access(conf)
             kong.log.err("Error when iterating over token to header extractor credentials: " .. err)
             return nil
         end
-        kong.log("token_name: " .. entity.token_name)
-        local header = ngx.req.get_headers()[entity.token_name];
+        local header = ngx.req. get_headers()[entity.token_name]
+        kong.log.info("headeraaaa: " .. header)
         if header then
+            kong.log.info("header: " .. header)
             local jwt, err = jwt_decoder:new(header)
-            local claims = jwt.claims
-            for claim_key, claim_value in pairs(claims) do
-                if entity.token_value_name == claim_key then
-                    -- set header
-                    req_set_header(entity.header_name, claim_value)
+            if err then
+                kong.log.err("new jwt decoder from header failed: " .. err)
+            end
+            if not jwt then
+                local claims = jwt.claims
+                for claim_key, claim_value in pairs(claims) do
+                    if entity.token_value_name == claim_key then
+                        -- set header
+                        req_set_header(entity.header_name, claim_value)
+                    end
                 end
-        
             end
         end
     end
